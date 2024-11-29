@@ -1,9 +1,33 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="24.8.9">
   <diagram name="Page-1" id="7gvHQes3CITw7aPWG8C5">
-    <mxGraphModel>
+    <mxGraphModel dx="746" dy="449" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="8Cj0FYDcSnTeaKGGPi_Q-1" value="&lt;span class=&quot;hljs-section&quot;&gt;User&lt;br/&gt;----------&lt;/span&gt;&lt;br/&gt;user&lt;span class=&quot;hljs-emphasis&quot;&gt;_id (PK)&lt;br/&gt;first_&lt;/span&gt;name&lt;br/&gt;last&lt;span class=&quot;hljs-emphasis&quot;&gt;_name&lt;br/&gt;email (UNIQUE)&lt;br/&gt;password_&lt;/span&gt;hash&lt;br/&gt;phone&lt;span class=&quot;hljs-emphasis&quot;&gt;_number&lt;br/&gt;role&lt;br/&gt;created_&lt;/span&gt;at" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="40" width="110" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="8Cj0FYDcSnTeaKGGPi_Q-2" value="&lt;span class=&quot;hljs-section&quot;&gt;Property&lt;br/&gt;----------&lt;/span&gt;&lt;br/&gt;property&lt;span class=&quot;hljs-emphasis&quot;&gt;_id (PK)&lt;br/&gt;host_&lt;/span&gt;id (FK → User.user&lt;span class=&quot;hljs-emphasis&quot;&gt;_id)&lt;br/&gt;name&lt;br/&gt;description&lt;br/&gt;location&lt;br/&gt;pricepernight&lt;br/&gt;created_&lt;/span&gt;at&lt;br/&gt;updated&lt;span class=&quot;hljs-emphasis&quot;&gt;_at&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="260" y="40" width="120" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="8Cj0FYDcSnTeaKGGPi_Q-3" value="&lt;div&gt;Booking&lt;/div&gt;&lt;div&gt;----------&lt;/div&gt;&lt;div&gt;booking_id (PK)&lt;/div&gt;&lt;div&gt;property_id (FK → Property.property_id)&lt;/div&gt;&lt;div&gt;user_id (FK → User.user_id)&lt;/div&gt;&lt;div&gt;start_date&lt;/div&gt;&lt;div&gt;end_date&lt;/div&gt;&lt;div&gt;total_price&lt;/div&gt;&lt;div&gt;status&lt;/div&gt;&lt;div&gt;created_at&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="40" width="120" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="8Cj0FYDcSnTeaKGGPi_Q-4" value="&lt;div&gt;Payment&lt;/div&gt;&lt;div&gt;----------&lt;/div&gt;&lt;div&gt;payment_id (PK)&lt;/div&gt;&lt;div&gt;booking_id (FK → Booking.booking_id)&lt;/div&gt;&lt;div&gt;amount&lt;/div&gt;&lt;div&gt;payment_date&lt;/div&gt;&lt;div&gt;payment_method&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="40" width="120" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="8Cj0FYDcSnTeaKGGPi_Q-5" value="&lt;div&gt;Review&lt;/div&gt;&lt;div&gt;----------&lt;/div&gt;&lt;div&gt;review_id (PK)&lt;/div&gt;&lt;div&gt;property_id (FK → Property.property_id)&lt;/div&gt;&lt;div&gt;user_id (FK → User.user_id)&lt;/div&gt;&lt;div&gt;rating&lt;/div&gt;&lt;div&gt;comment&lt;/div&gt;&lt;div&gt;created_at&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="110" y="280" width="120" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="8Cj0FYDcSnTeaKGGPi_Q-6" value="&lt;div&gt;Message&lt;/div&gt;&lt;div&gt;----------&lt;/div&gt;&lt;div&gt;message_id (PK)&lt;/div&gt;&lt;div&gt;sender_id (FK → User.user_id)&lt;/div&gt;&lt;div&gt;recipient_id (FK → User.user_id)&lt;/div&gt;&lt;div&gt;message_body&lt;/div&gt;&lt;div&gt;sent_at&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="295" width="120" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="8Cj0FYDcSnTeaKGGPi_Q-8" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.818;exitY=0.267;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.167;entryY=0.25;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="8Cj0FYDcSnTeaKGGPi_Q-1" target="8Cj0FYDcSnTeaKGGPi_Q-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="180" y="120" as="sourcePoint" />
+            <mxPoint x="230" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
