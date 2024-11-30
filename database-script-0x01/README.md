@@ -1,82 +1,107 @@
--- Create User Table
-CREATE TABLE User (
-    user_id UUID PRIMARY KEY,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    phone_number VARCHAR(20),
-    role ENUM('guest', 'host', 'admin') NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+# Airbnb-like Application Database Schema
 
--- Create Property Table
-CREATE TABLE Property (
-    property_id UUID PRIMARY KEY,
-    host_id UUID NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    description TEXT NOT NULL,
-    location VARCHAR(255) NOT NULL,
-    price_per_night DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_host FOREIGN KEY (host_id) REFERENCES User(user_id) ON DELETE CASCADE
-);
+## Overview
+This project defines a robust relational database schema for an Airbnb-like application. It is designed to efficiently store and manage data for users, properties, bookings, payments, reviews, and messages. The schema adheres to best practices, including third normal form (3NF), and ensures data integrity with constraints and relationships.
 
--- Create Booking Table
-CREATE TABLE Booking (
-    booking_id UUID PRIMARY KEY,
-    property_id UUID NOT NULL,
-    user_id UUID NOT NULL,
-    start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
-    total_price DECIMAL(10, 2) NOT NULL,
-    status ENUM('pending', 'confirmed', 'canceled') NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_property FOREIGN KEY (property_id) REFERENCES Property(property_id) ON DELETE CASCADE,
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE
-);
+---
 
--- Create Payment Table
-CREATE TABLE Payment (
-    payment_id UUID PRIMARY KEY,
-    booking_id UUID NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
-    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    payment_method ENUM('credit_card', 'paypal', 'stripe') NOT NULL,
-    CONSTRAINT fk_booking FOREIGN KEY (booking_id) REFERENCES Booking(booking_id) ON DELETE CASCADE
-);
+## Features
+1. **Normalization**: Schema follows 3NF to eliminate redundancy.
+2. **Data Integrity**: Enforced with primary keys, foreign keys, and validation checks.
+3. **Scalability**: Uses UUIDs for primary keys, suitable for distributed systems.
+4. **Performance**: Indexed frequently queried columns for optimized data retrieval.
+5. **Security**: Adheres to best practices for safe data storage and relationships.
 
--- Create Review Table
-CREATE TABLE Review (
-    review_id UUID PRIMARY KEY,
-    property_id UUID NOT NULL,
-    user_id UUID NOT NULL,
-    rating INTEGER CHECK (rating >= 1 AND rating <= 5) NOT NULL,
-    comment TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_property_review FOREIGN KEY (property_id) REFERENCES Property(property_id) ON DELETE CASCADE,
-    CONSTRAINT fk_user_review FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE
-);
+---
 
--- Create Message Table
-CREATE TABLE Message (
-    message_id UUID PRIMARY KEY,
-    sender_id UUID NOT NULL,
-    recipient_id UUID NOT NULL,
-    message_body TEXT NOT NULL,
-    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_sender FOREIGN KEY (sender_id) REFERENCES User(user_id) ON DELETE CASCADE,
-    CONSTRAINT fk_recipient FOREIGN KEY (recipient_id) REFERENCES User(user_id) ON DELETE CASCADE
-);
+## Entities and Relationships
+### Entities
+1. **User**: Stores user data such as personal details, email, roles, and authentication information.
+2. **Property**: Represents listings created by hosts.
+3. **Booking**: Tracks reservations for properties.
+4. **Payment**: Manages payments for bookings.
+5. **Review**: Captures user feedback on properties.
+6. **Message**: Logs communication between users.
 
--- Indexes for Optimization
-CREATE INDEX idx_user_email ON User (email);
-CREATE INDEX idx_property_host ON Property (host_id);
-CREATE INDEX idx_booking_property ON Booking (property_id);
-CREATE INDEX idx_booking_user ON Booking (user_id);
-CREATE INDEX idx_payment_booking ON Payment (booking_id);
-CREATE INDEX idx_review_property ON Review (property_id);
-CREATE INDEX idx_review_user ON Review (user_id);
-CREATE INDEX idx_message_sender ON Message (sender_id);
-CREATE INDEX idx_message_recipient ON Message (recipient_id);
+### Relationships
+- A **User** can host multiple **Properties**.
+- A **User** can make multiple **Bookings** for various **Properties**.
+- A **Booking** can have one **Payment**.
+- A **Property** can have multiple **Reviews**.
+- Users can send and receive **Messages**.
+
+---
+
+## Schema Details
+### User Table
+- **Primary Key**: `user_id`
+- **Attributes**: `first_name`, `last_name`, `email`, `password_hash`, `role`, `created_at`
+- **Constraints**: 
+  - Unique email
+  - Non-null fields: `first_name`, `last_name`, `email`, `password_hash`, `role`
+
+### Property Table
+- **Primary Key**: `property_id`
+- **Foreign Key**: `host_id` references `User(user_id)`
+- **Attributes**: `name`, `description`, `location`, `price_per_night`, `created_at`, `updated_at`
+- **Constraints**: 
+  - Non-null fields: `host_id`, `name`, `description`, `location`, `price_per_night`
+
+### Booking Table
+- **Primary Key**: `booking_id`
+- **Foreign Keys**: 
+  - `property_id` references `Property(property_id)`
+  - `user_id` references `User(user_id)`
+- **Attributes**: `start_date`, `end_date`, `total_price`, `status`, `created_at`
+- **Constraints**: 
+  - Non-null fields: `property_id`, `user_id`, `start_date`, `end_date`, `total_price`, `status`
+
+### Payment Table
+- **Primary Key**: `payment_id`
+- **Foreign Key**: `booking_id` references `Booking(booking_id)`
+- **Attributes**: `amount`, `payment_date`, `payment_method`
+- **Constraints**: 
+  - Non-null fields: `booking_id`, `amount`, `payment_method`
+
+### Review Table
+- **Primary Key**: `review_id`
+- **Foreign Keys**: 
+  - `property_id` references `Property(property_id)`
+  - `user_id` references `User(user_id)`
+- **Attributes**: `rating`, `comment`, `created_at`
+- **Constraints**: 
+  - Non-null fields: `property_id`, `user_id`, `rating`, `comment`
+  - `rating` between 1 and 5
+
+### Message Table
+- **Primary Key**: `message_id`
+- **Foreign Keys**: 
+  - `sender_id` references `User(user_id)`
+  - `recipient_id` references `User(user_id)`
+- **Attributes**: `message_body`, `sent_at`
+- **Constraints**: 
+  - Non-null fields: `sender_id`, `recipient_id`, `message_body`
+
+---
+
+## Indexes
+- **User**: `email`
+- **Property**: `host_id`
+- **Booking**: `property_id`, `user_id`
+- **Payment**: `booking_id`
+- **Review**: `property_id`, `user_id`
+- **Message**: `sender_id`, `recipient_id`
+
+---
+
+## SQL Scripts
+Refer to the `sql_schema.sql` file for the complete `CREATE TABLE` statements, constraints, and indexes. Each table is defined with appropriate relationships and indexing for optimal performance.
+
+---
+
+## Example Queries
+### Retrieve all properties hosted by a user:
+```sql
+SELECT * 
+FROM Property 
+WHERE host_id = 'user_uuid';
