@@ -25,6 +25,7 @@ JOIN Property p ON b.property_id = p.property_id
 LEFT JOIN Payment py ON b.booking_id = py.booking_id;
 
 -- Refactored Query
+-- performance.sql
 SELECT 
     b.booking_id,
     b.start_date,
@@ -47,4 +48,5 @@ FROM Booking b
 JOIN User u ON b.user_id = u.user_id
 JOIN Property p ON b.property_id = p.property_id
 LEFT JOIN Payment py ON b.booking_id = py.booking_id
-WHERE b.status = 'confirmed';
+WHERE b.status = 'confirmed' 
+AND py.payment_method IS NOT NULL;  -- Filter for bookings that have associated payment
