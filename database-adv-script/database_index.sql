@@ -17,3 +17,16 @@ CREATE INDEX idx_review_property_id ON Review(property_id);
 
 -- 6. Index on Review.user_id for efficient JOIN operations with User table
 CREATE INDEX idx_review_user_id ON Review(user_id);
+
+-- Measure query performance before adding indexes (EXPLAIN ANALYZE)
+-- Example query before adding indexes:
+EXPLAIN ANALYZE 
+SELECT * 
+FROM Booking 
+WHERE user_id = 'some-user-id';
+
+-- After running the above CREATE INDEX statements, re-run the query to analyze the performance with new indexes:
+EXPLAIN ANALYZE 
+SELECT * 
+FROM Booking 
+WHERE user_id = 'some-user-id';
